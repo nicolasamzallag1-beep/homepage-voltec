@@ -795,6 +795,24 @@ img {
   text-shadow: 0 0 20px var(--yellow-glow);
 }
 
+.highlight-yellow {
+  color: var(--yellow);
+  position: relative;
+  z-index: 1;
+}
+
+.highlight-yellow::after {
+  content: '';
+  position: absolute;
+  bottom: 15%;
+  left: -2%;
+  width: 104%;
+  height: 25%;
+  background: rgba(245, 197, 24, 0.15);
+  z-index: -1;
+  transform: skewX(-15deg);
+}
+
 .product-info .section-eyebrow {
   color: var(--yellow);
 }
@@ -865,6 +883,98 @@ img {
   background: var(--gray-50);
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.product-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--white);
+  transform: translateY(-2px);
+}
+
+.btn-large {
+  padding: 18px 48px;
+  font-size: 1.1rem;
+}
+
+/* ---------- Anti-Grêle Section ---------- */
+.resilience {
+  padding: var(--section-pad) 0;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.resilience-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.resilience-content h2 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+
+.resilience-content p {
+  font-size: 1.15rem;
+  color: var(--gray-600);
+  margin-bottom: 32px;
+}
+
+.resilience-list {
+  list-style: none;
+}
+
+.resilience-list li {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  color: var(--gray-800);
+}
+
+.resilience-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-weight: 900;
+}
+
+.resilience-visual {
+  position: relative;
+}
+
+.resilience-visual img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+}
+
+.resilience-image-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, var(--yellow-glow) 0%, transparent 60%);
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 
@@ -1092,78 +1202,85 @@ img {
 
 /* ---------- Installer CTA ---------- */
 .installer {
-  padding: var(--section-pad) 0;
-  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 50%, var(--blue-deep) 100%);
-  color: var(--white);
+  padding: calc(var(--section-pad) * 1.5) 0;
   position: relative;
   overflow: hidden;
+  color: var(--white);
+  background: var(--gray-900);
 }
 
-.installer::before {
-  content: '';
+.installer-bg {
   position: absolute;
-  top: -100px;
-  right: -100px;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, var(--yellow-glow) 0%, transparent 70%);
-  pointer-events: none;
+  inset: -100px;
+  z-index: 0;
 }
 
-.installer::after {
-  content: '';
+.installer-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65;
+  filter: brightness(0.6) saturate(0.8);
+}
+
+.installer-overlay {
   position: absolute;
-  bottom: -150px;
-  left: -150px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(74, 122, 181, 0.3) 0%, transparent 70%);
-  pointer-events: none;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(10, 15, 26, 0.95) 0%, rgba(10, 15, 26, 0.4) 50%, rgba(10, 15, 26, 0.95) 100%);
+  z-index: 1;
 }
 
 .installer-inner {
   text-align: center;
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .installer h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  margin-bottom: 20px;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 28px;
+}
+
+.installer h2 .highlight {
+  color: var(--yellow);
 }
 
 .installer p {
-  font-size: 1.15rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.7;
-  margin-bottom: 40px;
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin-bottom: 48px;
 }
 
-.installer .btn-primary {
-  font-size: 1.1rem;
-  padding: 18px 44px;
+.installer-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
 .installer-secondary {
-  margin-top: 24px;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .installer-secondary a {
-  color: var(--yellow);
+  color: var(--white);
   font-weight: 600;
-  margin-left: 6px;
-  transition: color 0.3s;
+  margin-left: 8px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: all 0.3s;
 }
 
 .installer-secondary a:hover {
-  color: var(--yellow-light);
+  color: var(--yellow);
+  text-decoration-color: var(--yellow);
 }
 
 

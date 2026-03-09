@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Scroll Reveal (IntersectionObserver) ---------- */
   const revealElements = document.querySelectorAll(
-    '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-clip, .reveal-clip-horizontal'
+    '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-clip, .reveal-clip-horizontal, .resilience-list li'
   );
 
   const revealObserver = new IntersectionObserver((entries) => {
@@ -318,15 +318,16 @@ document.addEventListener('DOMContentLoaded', () => {
     position: 'fixed',
     width: '400px',
     height: '400px',
-    background: 'radial-gradient(circle, rgba(245, 197, 24, 0.1) 0%, transparent 70%)',
+    background: 'radial-gradient(circle, rgba(245, 197, 24, 0.15) 0%, transparent 70%)',
     borderRadius: '50%',
     pointerEvents: 'none',
     zIndex: '9999',
     transform: 'translate(-50%, -50%)',
-    mixBlendMode: 'screen',
+    mixBlendMode: 'plus-lighter',
     opacity: '0',
-    transition: 'opacity 0.5s ease',
-    filter: 'blur(30px)'
+    transition: 'opacity 0.6s ease, width 0.3s ease, height 0.3s ease',
+    filter: 'blur(40px)',
+    border: '1px solid rgba(245, 197, 24, 0.1)'
   });
   document.body.appendChild(sweepFlare);
 
@@ -365,6 +366,16 @@ document.addEventListener('DOMContentLoaded', () => {
         bg.style.transform = `translateY(${offset * factor}px)`;
       }
     });
+
+    // Installer BG parallax
+    const installerBg = document.querySelector('.installer-bg');
+    if (installerBg) {
+      const rect = installerBg.parentElement.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const move = rect.top * 0.15;
+        installerBg.style.transform = `translateY(${move}px)`;
+      }
+    }
 
     // Enhanced tag parallax
     document.querySelectorAll('[data-parallax]').forEach(el => {
