@@ -311,7 +311,76 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  /* ---------- Section Progress Bars (horizontal decorative lines) ---------- */
+  /* ---------- Solar Sweep Mouse Interaction ---------- */
+  const sweepFlare = document.createElement('div');
+  sweepFlare.className = 'solar-sweep-flare';
+  Object.assign(sweepFlare.style, {
+    position: 'fixed',
+    width: '400px',
+    height: '400px',
+    background: 'radial-gradient(circle, rgba(245, 197, 24, 0.1) 0%, transparent 70%)',
+    borderRadius: '50%',
+    pointerEvents: 'none',
+    zIndex: '9999',
+    transform: 'translate(-50%, -50%)',
+    mixBlendMode: 'screen',
+    opacity: '0',
+    transition: 'opacity 0.5s ease',
+    filter: 'blur(30px)'
+  });
+  document.body.appendChild(sweepFlare);
+
+  window.addEventListener('mousemove', (e) => {
+    sweepFlare.style.opacity = '1';
+    sweepFlare.style.left = e.clientX + 'px';
+    sweepFlare.style.top = e.clientY + 'px';
+
+    // Highlight targets near cursor
+    document.querySelectorAll('h1, h2, .btn-primary').forEach(target => {
+      const rect = target.getBoundingClientRect();
+      const dist = Math.hypot(e.clientX - (rect.left + rect.width / 2), e.clientY - (rect.top + rect.height / 2));
+      if (dist < 200) {
+        target.classList.add('solar-sweep-active');
+      } else {
+        target.classList.remove('solar-sweep-active');
+      }
+    });
+  });
+
+  window.addEventListener('mouseleave', () => {
+    sweepFlare.style.opacity = '0';
+  });
+
+
+  /* ---------- Deep Parallax & Visual Breaks ---------- */
+  const handleDeepParallax = () => {
+    const scrollY = window.scrollY;
+
+    // Break BG parallax
+    document.querySelectorAll('.break-bg').forEach(bg => {
+      const rect = bg.parentElement.getBoundingClientRect();
+      const offset = rect.top;
+      if (offset < window.innerHeight && offset > -rect.height) {
+        const factor = 0.2;
+        bg.style.transform = `translateY(${offset * factor}px)`;
+      }
+    });
+
+    // Enhanced tag parallax
+    document.querySelectorAll('[data-parallax]').forEach(el => {
+      const factor = parseFloat(el.dataset.parallax);
+      const rect = el.getBoundingClientRect();
+      const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+      const move = (scrollProgress - 0.5) * 100 * factor;
+      el.style.transform = `translateY(${move}px)`;
+    });
+  };
+
+  window.addEventListener('scroll', handleDeepParallax, { passive: true });
+  handleDeepParallax();
+
+
+  /* ---------- Section Progress Bars... ---------- */
   const sections = document.querySelectorAll('.intro, .product, .manufacturing, .figures, .installer');
 
   const sectionObserver = new IntersectionObserver((entries) => {
